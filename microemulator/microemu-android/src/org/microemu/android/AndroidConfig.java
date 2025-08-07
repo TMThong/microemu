@@ -49,7 +49,7 @@ public class AndroidConfig {
 	public double CANVAS_AREA_RIGHT = 1d;
 	
 	public double CANVAS_AREA_BOTTOM = 1d;
-	
+
 	/**
 	 * Use fixed display resolution and rescale if necessary
 	 */
