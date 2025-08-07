@@ -57,7 +57,7 @@ public class AndroidConfig {
     public boolean ORIG_DISPLAY_FIXED = false;
     
     public int ORIG_DISPLAY_WIDTH = 240;
-    
+     
     public int ORIG_DISPLAY_HEIGHT = 320;
 	
 }
