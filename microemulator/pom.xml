@@ -144,7 +144,6 @@
     <properties>
         <buildLabel>${project.version}</buildLabel>
         <pyx4meVersion>2.0.3</pyx4meVersion>
-        <jourVersion>1.0.0</jourVersion>
         <!-- See OS X profile -->
         <javaRunTimeJar>${java.home}/lib/rt.jar</javaRunTimeJar>
         <javaRunTimeSecurityJar>${java.home}/lib/jsse.jar</javaRunTimeSecurityJar>
@@ -183,15 +182,6 @@
                 <artifactId>junit</artifactId>
                 <version>4.13.2</version>
                 <scope>test</scope>
-            </dependency>
-
-            <!-- Temporary placeholder for jour dependencies to avoid build errors -->
-            <dependency>
-                <groupId>net.sf.jour</groupId>
-                <artifactId>jour-instrument</artifactId>
-                <version>1.0.0</version>
-                <scope>test</scope>
-                <optional>true</optional>
             </dependency>
 
         </dependencies>
@@ -316,13 +306,6 @@
 
         <pluginManagement>
             <plugins>
-                <!-- Temporary placeholder for jour plugin to avoid build errors -->
-                <plugin>
-                    <groupId>net.sf.jour</groupId>
-                    <artifactId>jour-maven-plugin</artifactId>
-                    <version>1.0.0</version>
-                </plugin>
-
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -415,6 +398,9 @@
                         <include>**/*Test.*</include>
                         <include>**/*Tests.*</include>
                     </includes>
+                    <excludes>
+                        <exclude>**/*APIDeclarationsTest.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>

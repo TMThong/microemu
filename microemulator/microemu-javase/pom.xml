@@ -31,7 +31,6 @@
             <groupId>org.microemu</groupId>
             <artifactId>microemu-injected</artifactId>
             <version>${project.version}</version>
-            <classifier>inject</classifier>
         </dependency>
         -->
 

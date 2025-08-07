@@ -33,7 +33,6 @@ import org.microemu.app.util.MIDletThread;
 import org.microemu.app.util.MIDletTimer;
 import org.microemu.app.util.MIDletTimerTask;
 import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodAdapter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
@@ -41,7 +40,7 @@ import org.objectweb.asm.Opcodes;
  * @author vlads
  *
  */
-public class ChangeCallsMethodVisitor extends MethodAdapter implements Opcodes {
+public class ChangeCallsMethodVisitor extends MethodVisitor implements Opcodes {
 
 	private static final String INJECTED_CLASS = codeName(Injected.class);
 	
@@ -68,7 +67,7 @@ public class ChangeCallsMethodVisitor extends MethodAdapter implements Opcodes {
 	}
 	
 	public ChangeCallsMethodVisitor(MethodVisitor mv, InstrumentationConfig config) {
-		super(mv);
+		super(Opcodes.ASM9, mv);
 		this.config = config;
 	}
 
@@ -82,19 +81,19 @@ public class ChangeCallsMethodVisitor extends MethodAdapter implements Opcodes {
 			if ((name.equals("out")) && (owner.equals("java/lang/System"))) {
 				//System.out.println("owner " + owner + " name " + name + " desc " + desc);
 				// GETSTATIC System.out : PrintStream
-				mv.visitFieldInsn(opcode, NEW_SYSTEM_OUT_CLASS, name, desc);
+				super.visitFieldInsn(opcode, NEW_SYSTEM_OUT_CLASS, name, desc);
 				return;
 			}
 			if ((name.equals("err")) && (owner.equals("java/lang/System"))) {
 				//System.out.println("owner " + owner + " name " + name + " desc " + desc);
 				// GETSTATIC System.out : PrintStream
-				mv.visitFieldInsn(opcode, NEW_SYSTEM_OUT_CLASS, name, desc);
+				super.visitFieldInsn(opcode, NEW_SYSTEM_OUT_CLASS, name, desc);
 				return;
 			}
 			break;
 
 		}
-		mv.visitFieldInsn(opcode, owner, name, desc);
+		super.visitFieldInsn(opcode, owner, name, desc);
 	}
     
 	public void visitMethodInsn(int opcode, String owner, String name, String desc) {
@@ -104,7 +103,7 @@ public class ChangeCallsMethodVisitor extends MethodAdapter implements Opcodes {
 			if ((name.equals("getProperty")) && (owner.equals("java/lang/System"))) {
 				// INVOKESTATIC
                 // java/lang/System.getProperty(Ljava/lang/String;)Ljava/lang/String;
-				mv.visitMethodInsn(opcode, NEW_SYSTEM_PROPERTIES_CLASS, name, desc);
+				super.visitMethodInsn(opcode, NEW_SYSTEM_PROPERTIES_CLASS, name, desc);
 				return;
 			}
 			break;
@@ -113,11 +112,11 @@ public class ChangeCallsMethodVisitor extends MethodAdapter implements Opcodes {
 				// INVOKEVIRTUAL
 		        // java/lang/Class.getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;
 				// "org/microemu/ResourceLoader", "getResourceAsStream", "(Ljava/lang/Class;Ljava/lang/String;)Ljava/io/InputStream;");
-				mv.visitMethodInsn(INVOKESTATIC, NEW_RESOURCE_LOADER_CLASS, name, "(Ljava/lang/Class;Ljava/lang/String;)Ljava/io/InputStream;");
+				super.visitMethodInsn(INVOKESTATIC, NEW_RESOURCE_LOADER_CLASS, name, "(Ljava/lang/Class;Ljava/lang/String;)Ljava/io/InputStream;");
 				return;
 			} else if ((name.equals("printStackTrace")) && (owner.equals("java/lang/Throwable"))) {
 				// INVOKEVIRTUAL java/lang/Throwable.printStackTrace()V
-				mv.visitMethodInsn(INVOKESTATIC, INJECTED_CLASS, name, "(Ljava/lang/Throwable;)V");
+				super.visitMethodInsn(INVOKESTATIC, INJECTED_CLASS, name, "(Ljava/lang/Throwable;)V");
 				return;
 			}
 			break;
@@ -134,7 +133,7 @@ public class ChangeCallsMethodVisitor extends MethodAdapter implements Opcodes {
 			break;
 		}
 
-		mv.visitMethodInsn(opcode, owner, name, desc);
+		super.visitMethodInsn(opcode, owner, name, desc);
 	}
 	
     public void visitTypeInsn(final int opcode, String desc) {
@@ -147,7 +146,7 @@ public class ChangeCallsMethodVisitor extends MethodAdapter implements Opcodes {
     			desc = codeName(MIDletThread.class);
     		}
     	} 
-    	mv.visitTypeInsn(opcode, desc);
+    	super.visitTypeInsn(opcode, desc);
     }
     
     public void visitTryCatchBlock(final Label start, final Label end, final Label handler, final String type) {
@@ -160,9 +159,9 @@ public class ChangeCallsMethodVisitor extends MethodAdapter implements Opcodes {
     			newHandler = new CatchInformation(type);
     			catchInfo.put(handler, newHandler);
     		}
-    		mv.visitTryCatchBlock(start, end, newHandler.label, type);
+    		super.visitTryCatchBlock(start, end, newHandler.label, type);
     	} else {
-    		mv.visitTryCatchBlock(start, end, handler, type);
+    		super.visitTryCatchBlock(start, end, handler, type);
     	}
 	}
     
@@ -171,14 +170,14 @@ public class ChangeCallsMethodVisitor extends MethodAdapter implements Opcodes {
     	if (config.isEnhanceCatchBlock() && catchInfo != null) {
     		CatchInformation newHandler = (CatchInformation)catchInfo.get(label);
     		if (newHandler != null) {
-    			mv.visitLabel(newHandler.label);
+    			super.visitLabel(newHandler.label);
     			// no push, just use current Throwable in stack
-    			mv.visitMethodInsn(INVOKESTATIC, INJECTED_CLASS, "handleCatchThrowable", "(Ljava/lang/Throwable;)Ljava/lang/Throwable;");
+    			super.visitMethodInsn(INVOKESTATIC, INJECTED_CLASS, "handleCatchThrowable", "(Ljava/lang/Throwable;)Ljava/lang/Throwable;");
     			// stack contains Throwable, just verify that it is right type for this handler
-        		mv.visitTypeInsn(CHECKCAST, newHandler.type);
+        		super.visitTypeInsn(CHECKCAST, newHandler.type);
     		}	
     	}
-    	mv.visitLabel(label);
+    	super.visitLabel(label);
     }
 	
 }

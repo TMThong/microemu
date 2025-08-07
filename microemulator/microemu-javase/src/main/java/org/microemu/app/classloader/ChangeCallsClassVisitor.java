@@ -33,15 +33,15 @@ import org.microemu.app.util.MIDletThread;
 import org.microemu.app.util.MIDletTimer;
 import org.microemu.app.util.MIDletTimerTask;
 import org.microemu.log.Logger;
-import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * @author vlads
  * 
  */
-public class ChangeCallsClassVisitor extends ClassAdapter {
+public class ChangeCallsClassVisitor extends ClassVisitor {
 
 	InstrumentationConfig config;
 
@@ -57,7 +57,7 @@ public class ChangeCallsClassVisitor extends ClassAdapter {
 	}
 
 	public ChangeCallsClassVisitor(ClassVisitor cv, InstrumentationConfig config) {
-		super(cv);
+		super(Opcodes.ASM9, cv);
 		this.config = config;
 	}
 
