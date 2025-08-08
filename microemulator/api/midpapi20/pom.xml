@@ -31,6 +31,7 @@
     <build>
         <plugins>
 
+            <!-- Temporarily disabled jour plugin for modernization 
             <plugin>
                 <groupId>net.sf.jour</groupId>
                 <artifactId>jour-maven-plugin</artifactId>
@@ -51,7 +52,9 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
 
+            <!-- Temporarily disabled proguard plugin - requires jour-generated classes
             <plugin>
                 <groupId>com.pyx4me</groupId>
                 <artifactId>proguard-maven-plugin</artifactId>
@@ -73,6 +76,7 @@
                     </options>
                 </configuration>
             </plugin>
+            -->
 
         </plugins>
     </build>

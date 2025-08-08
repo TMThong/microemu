@@ -31,12 +31,11 @@
             <groupId>org.microemu</groupId>
             <artifactId>microemu-injected</artifactId>
             <version>${project.version}</version>
-            <classifier>inject</classifier>
         </dependency>
         -->
 
         <dependency>
-            <groupId>asm</groupId>
+            <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
         </dependency>
 

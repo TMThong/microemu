@@ -29,7 +29,6 @@
             <groupId>org.microemu</groupId>
             <artifactId>microemu-cldc</artifactId>
             <version>${project.version}</version>
-            <classifier>4applet</classifier>
             <optional>true</optional>
         </dependency>
 
@@ -37,7 +36,6 @@
             <groupId>org.microemu</groupId>
             <artifactId>microemu-midp</artifactId>
             <version>${project.version}</version>
-            <classifier>4applet</classifier>
             <exclusions>
                 <exclusion>
                     <groupId>org.microemu</groupId><artifactId>microemu-cldc</artifactId>
@@ -122,10 +120,8 @@
                     <assembly>
                         <inclusions>
                             <inclusion>
-                                <groupId>org.microemu</groupId><artifactId>microemu-cldc</artifactId><classifier>4applet</classifier><library>true</library>
                             </inclusion>
                             <inclusion>
-                                <groupId>org.microemu</groupId><artifactId>microemu-midp</artifactId><classifier>4applet</classifier><library>true</library>
                             </inclusion>
                             <inclusion>
                                 <groupId>org.microemu</groupId><artifactId>microemu-javase</artifactId>

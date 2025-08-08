@@ -24,19 +24,19 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.3</source>
-                    <target>1.1</target>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
 
-            <!-- Create application loadable on the phone -->
+            <!-- Temporarily disabled j2me plugin - doesn't support Java 17
             <plugin>
                 <groupId>com.pyx4me</groupId>
                 <artifactId>j2me-maven-plugin</artifactId>
                 <version>${pyx4meVersion}</version>
                 <executions>
                    <execution>
-                        <!-- Phase before package -->
+                        Phase before package
                         <phase>test</phase>
                         <goals>
                             <goal>package</goal>
@@ -46,7 +46,6 @@
                 <configuration>
                     <attach>false</attach>
                     <useWtkLibs>false</useWtkLibs>
-                    <!--wtkHome>${env.WTK_HOME}</wtkHome-->
                     <proguardPreverify>true</proguardPreverify>
                     <proguard>false</proguard>
                     <obfuscate>false</obfuscate>
@@ -60,12 +59,12 @@
                     <classifier>none</classifier>
                     <libs>
                         <lib>${basedir}/../api/cldcapi11/target/cldcapi11-${project.version}.jar</lib>
-                        <!--lib>${basedir}/../api/midpapi20/target/midpapi20-${project.version}.jar</lib-->
                     </libs>
                 </configuration>
             </plugin>
+            -->
 
-            <!-- jar-with jar -->
+            <!-- Temporarily disabled assembly plugin - depends on j2me plugin output
             <plugin>
                <artifactId>maven-assembly-plugin</artifactId>
                <version>${assemblyPluginVersion}</version>
@@ -81,6 +80,7 @@
                    </descriptors>
                </configuration>
             </plugin>
+            -->
 
         </plugins>
     </build>
